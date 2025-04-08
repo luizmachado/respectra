@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🤖 - Respectra</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>🤖 - Respectra - Uma IA para magnetismo</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <!-- Font Awesome para ícones -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Layout em duas colunas -->
+        <div class="main-layout">
+	{% if upload_ativo %}
+            <!-- Área de Upload -->
+            <div class="upload-area card">
+                <h2><i class="fas fa-upload"></i> Enviar Arquivos</h2>
+                <form action="/" method="POST" enctype="multipart/form-data">
+                    <div class="file-inputs">
+                        <label for="file1"><i class="fas fa-file"></i> CIF:</label>
+                        <input type="file" id="file_cif" name="file_cif"><br>
+                        <label for="file2"><i class="fas fa-file"></i> MvsH1:</label>
+                        <input type="file" id="file_MvsH1" name="file_MvsH1"><br>
+                        <label for="file3"><i class="fas fa-file"></i> MvsH2:</label>
+                        <input type="file" id="file_MvsH2" name="file_MvsH2"><br>
+                        <label for="file4"><i class="fas fa-file"></i> MvsT1:</label>
+                        <input type="file" id="file_MvsT1" name="file_MvsT1"><br>
+                        <label for="file5"><i class="fas fa-file"></i> MvsT2:</label>
+                        <input type="file" id="file_MvsT2" name="file_MvsT2"><br>
+                    </div>
+                    <button type="submit" class="btn">Enviar Arquivos</button>
+                </form>
+            </div>
+	{% endif %}
+
+            <!-- Área de Chat -->
+            <div class="chat-area card">
+                <h2><i class="fas fa-comments"></i> Chat</h2>
+                <div id="chat-box">
+                    {% for message in chat_messages %}
+                        <p>{{ message }}</p>
+                    {% endfor %}
+                </div>
+                <div class="chat-input">
+                    <input type="text" id="chat-message" placeholder="Digite sua mensagem...">
+                    <button onclick="sendMessage()" class="btn"><i class="fas fa-paper-plane"></i> Enviar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function sendMessage() {
+            const message = document.getElementById('chat-message').value;
+            if (message.trim() === '') return;
+
+            // Enviar mensagem via AJAX
+            fetch('/send_message', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: `message=${encodeURIComponent(message)}`
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    // Atualizar a caixa de chat
+                    const chatBox = document.getElementById('chat-box');
+                    chatBox.innerHTML = '';
+                    data.messages.forEach(msg => {
+                        const p = document.createElement('p');
+                        p.textContent = msg;
+                        chatBox.appendChild(p);
+                    });
+                    document.getElementById('chat-message').value = ''; // Limpar input
+                }
+            });
+        }
+    </script>
+</body>
+</html>
