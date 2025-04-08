@@ -1,7 +1,14 @@
 from flask import Flask, render_template, request, redirect, url_for, jsonify
 from flask import stream_with_context
-from langchain_community.llms import Ollama
-from utils.tools import generate_tokens
+from chains import json_chain
+from chains import julia_chain
+from chains import general_chain
+from prompts import responde_prompt
+from prompts import routing_prompt
+from langchain_core.runnables import RunnableBranch
+from langchain_ollama import ChatOllama
+from langchain_core.output_parsers import StrOutputParser
+import logging
 import json
 import os
 
@@ -14,9 +21,26 @@ if not os.path.exists(UPLOAD_FOLDER):
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 # Configuração do Ollama
-OLLAMA_BASE_URL = os.getenv("OLLAMA_BASE_URL", "http://0.0.0.0:11434")
-OLLAMA_MODEL = os.getenv("OLLAMA_MODEL", "gemma3")
-llm = Ollama(model=OLLAMA_MODEL, base_url=OLLAMA_BASE_URL)
+OLLAMA_MODEL = os.getenv("OLLAMA_MODEL", "phi3:latest")
+
+def chat_ia(query):
+    llm = ChatOllama(model=OLLAMA_MODEL)
+    route_prompt = routing_prompt()
+    routing_chain = (route_prompt | llm | StrOutputParser())
+
+    # Definindo os branches para diferentes rotas
+    branch = RunnableBranch(
+        (lambda x: "gerarjson" in x["topic"].lower(), json_chain),
+        (lambda x: "execjulia" in x["topic"].lower(), julia_chain),
+        lambda x: general_chain,
+    )
+
+    full_chain = (
+        {"topic": routing_chain, "question": lambda x: x["question"]} | branch
+    )
+
+    resultado = full_chain.invoke({"question": query})
+    return resultado
 
 
 # Lista para armazenar mensagens do chat
@@ -29,7 +53,7 @@ def index():
                 'file_cif': 'CIF',
                 'file_MvsH1': 'MvsH1',
                 'file_MvsH2': 'MvsH2',
-                'file_MvsH3': 'MvsH2',
+                'file_MvsH3': 'MvsH3',
                 'file_MvsT1': 'MvsT1',
                 'file_MvsT2': 'MvsT2',
                 'file_MvsT3': 'MvsT3',
@@ -45,12 +69,22 @@ def index():
     return render_template('index.html', chat_messages=chat_messages)
 
 @app.route('/send_message', methods=['POST'])
+
 def send_message():
     # Receber mensagem do chat via AJAX
-    message = request.form.get('message')
-    if message:
-        chat_messages.append(message)
-    return jsonify({'status': 'success', 'messages': chat_messages})
+    query_input = None
+    output = None
+    if request.method == 'POST':
+        query_input = request.form.get('message')
+        if query_input:
+            try:
+                print(query_input)
+                output = chat_ia(query_input)
+                print(output)
+            except Exception as e:
+                logging.error(f"Erro ao acessar modelo de linguagem: {e}")
+                output = "Desculpe, houve um erro ao processar a sua requisição."
+    return jsonify({'status': 'success', 'messages': output})
 
 if __name__ == '__main__':
     app.run(debug=True)
