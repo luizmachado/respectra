@@ -1,4 +1,8 @@
 from flask import Flask, render_template, request, redirect, url_for, jsonify
+from flask import stream_with_context
+from langchain_community.llms import Ollama
+from utils.tools import generate_tokens
+import json
 import os
 
 app = Flask(__name__)
@@ -8,6 +12,12 @@ UPLOAD_FOLDER = 'uploads'
 if not os.path.exists(UPLOAD_FOLDER):
     os.makedirs(UPLOAD_FOLDER)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
+# Configuração do Ollama
+OLLAMA_BASE_URL = os.getenv("OLLAMA_BASE_URL", "http://0.0.0.0:11434")
+OLLAMA_MODEL = os.getenv("OLLAMA_MODEL", "gemma3")
+llm = Ollama(model=OLLAMA_MODEL, base_url=OLLAMA_BASE_URL)
+
 
 # Lista para armazenar mensagens do chat
 chat_messages = []
