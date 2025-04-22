@@ -1,12 +1,11 @@
 from flask import Flask, render_template, request, redirect, url_for, jsonify
-from flask import stream_with_context
+from langchain_google_genai import ChatGoogleGenerativeAI
 from chains import json_chain
 from chains import julia_chain
 from chains import general_chain
 from prompts import responde_prompt
 from prompts import routing_prompt
 from langchain_core.runnables import RunnableBranch
-from langchain_ollama import ChatOllama
 from langchain_core.output_parsers import StrOutputParser
 import logging
 import json
@@ -20,11 +19,9 @@ if not os.path.exists(UPLOAD_FOLDER):
     os.makedirs(UPLOAD_FOLDER)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
-# Configuração do Ollama
-OLLAMA_MODEL = os.getenv("OLLAMA_MODEL", "phi3:latest")
-
 def chat_ia(query):
-    llm = ChatOllama(model=OLLAMA_MODEL)
+    # Substitui ChatOllama pelo modelo Gemini
+    llm = ChatGoogleGenerativeAI(model="gemini-pro")
     route_prompt = routing_prompt()
     routing_chain = (route_prompt | llm | StrOutputParser())
 
@@ -88,6 +85,3 @@ def send_message():
 
 if __name__ == '__main__':
     app.run(debug=True)
-
-
-

@@ -1,4 +1,5 @@
 from langchain_core.runnables import chain
+from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_core.output_parsers import JsonOutputParser
 from prompts import cef_json_prompt, responde_prompt, chart_prompt
 from utils.tools import format_and_save_json, verificar_arquivos, exec_graph, limpa_temp
@@ -9,19 +10,14 @@ from langchain_core.prompts import PromptTemplate
 from langchain_core.output_parsers import StrOutputParser
 from prompts import routing_prompt
 from langchain_core.runnables import RunnableBranch
-from langchain_ollama import ChatOllama
-from src_julia.graficos_matplotlib import cs_matplotlib, mag_matplotlib, spin_matplotlib
 import os
 
-OLLAMA_MODEL = os.getenv("OLLAMA_MODEL", "phi3:latest")
-
-llm = ChatOllama(model=OLLAMA_MODEL)
+llm = ChatGoogleGenerativeAI(model="gemini-pro")
 
 parser = JsonOutputParser(pydantic_object=AjusteCompleto)
 
 arquivos_txt = ['ConfSpin_Calc.txt', 'CsT_calc.txt', 'Entrop_calc.txt', 'MH1_calc.txt', 'MH2_calc.txt', 'MT1_calc.txt', 'MT2_calc.txt']
 julia_dir = './src_julia'
-
 
 
 def routing_chain():
