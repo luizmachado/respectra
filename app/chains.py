@@ -12,7 +12,7 @@ from prompts import routing_prompt
 from langchain_core.runnables import RunnableBranch
 import os
 
-llm = ChatGoogleGenerativeAI(model="gemini-pro")
+llm = ChatGoogleGenerativeAI(model="gemini-2.0-flash")
 
 parser = JsonOutputParser(pydantic_object=AjusteCompleto)
 

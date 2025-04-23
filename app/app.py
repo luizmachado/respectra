@@ -21,7 +21,7 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 def chat_ia(query):
     # Substitui ChatOllama pelo modelo Gemini
-    llm = ChatGoogleGenerativeAI(model="gemini-pro")
+    llm = ChatGoogleGenerativeAI(model="gemini-2.0-flash")
     route_prompt = routing_prompt()
     routing_chain = (route_prompt | llm | StrOutputParser())
 
