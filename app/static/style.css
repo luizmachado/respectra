@@ -1,115 +1,122 @@
-/* Reset básico */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+/* Garante que o contêiner principal tenha rolagem vertical */
+.container-fluid {
+    overflow: hidden; /* Remove rolagem desnecessária no nível superior */
 }
 
+/* Corrige a rolagem na área do chat */
+#chat-box {
+    max-height: 80vh; /* Limita a altura máxima da área de chat */
+    overflow-y: auto; /* Habilita a rolagem vertical */
+    scrollbar-width: thin; /* Estiliza a barra de rolagem */
+    scrollbar-color: #888 transparent; /* Cor da barra de rolagem */
+}
+
+/* Aumenta o tamanho da fonte global */
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
-    color: #333;
-    line-height: 1.6;
-    padding: 20px;
+    font-size: 16px; /* Tamanho base maior */
+    line-height: 1.6; /* Espaçamento entre linhas para melhor legibilidade */
 }
 
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
+/* Ajusta o tamanho da fonte no cabeçalho */
+header h4 {
+    font-size: 1.25rem; /* Tamanho maior para o título */
 }
 
-h1 {
-    text-align: center;
-    color: #2c3e50;
-    margin-bottom: 30px;
+/* Ajusta o tamanho da fonte nas mensagens do chat */
+.chat-message {
+    font-size: 1rem; /* Tamanho padrão para mensagens */
 }
 
-.main-layout {
-    display: flex;
-    gap: 30px;
+/* Aumenta o tamanho da fonte no campo de entrada */
+#chat-message {
+    font-size: 1.1rem; /* Tamanho maior para o input */
 }
 
-.card {
-    background: white;
-    border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    padding: 20px;
-    flex: 1;
-    transition: transform 0.3s ease;
-}
-
-.card:hover {
-    transform: translateY(-5px);
-}
-
-h2 {
-    font-size: 1.5rem;
-    color: #2c3e50;
-    margin-bottom: 20px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.file-inputs label {
-    font-weight: bold;
-    color: #555;
-    margin-right: 10px;
-}
-
-.file-inputs input {
-    margin-bottom: 15px;
-    padding: 8px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    width: 100%;
-}
-
-.btn {
-    background: #3498db;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 1rem;
-    transition: background 0.3s ease;
-}
-
-.btn:hover {
-    background: #2980b9;
-}
-
-.chat-area #chat-box {
-    height: 200px;
-    overflow-y: auto;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    padding: 10px;
-    margin-bottom: 10px;
-    background: #f9f9f9;
-}
-
-.chat-input {
-    display: flex;
-    gap: 10px;
-}
-
-.chat-input input {
-    flex: 1;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    font-size: 1rem;
-}
-
-.chat-input button {
+/* Estilo para balões de mensagem do usuário */
+.user-bubble {
+    background-color: #e9ecef; /* Cinza claro */
+    border-radius: 15px; /* Bordas arredondadas */
     padding: 10px 15px;
+    max-width: 80%; /* Limita a largura dos balões */
+    margin-left: auto; /* Alinha à direita */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra sutil */
 }
 
-@media (max-width: 768px) {
-    .main-layout {
-        flex-direction: column;
-    }
+/* Estilo para balões de mensagem da IA */
+.ai-bubble {
+    background-color: #d1e7dd; /* Verde claro */
+    border-radius: 15px;
+    padding: 10px 15px;
+    max-width: 80%;
+    margin-right: auto; /* Alinha à esquerda */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilo para o nome do remetente */
+.chat-message strong {
+    color: #333; /* Cor mais escura para o nome */
+    margin-right: 5px;
+}
+
+/* Estilo para o card de upload */
+.card {
+    border: none; /* Remove bordas padrão */
+    border-radius: 10px; /* Bordas arredondadas */
+    background-color: #f8f9fa; /* Fundo claro */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra suave */
+}
+
+/* Estilo para os inputs de arquivo */
+.form-control {
+    border-radius: 8px; /* Bordas arredondadas */
+    border: 1px solid #ced4da; /* Borda clara */
+    transition: border-color 0.3s ease; /* Transição suave */
+}
+
+.form-control:focus {
+    border-color: #86b7fe; /* Cor azul ao focar */
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25); /* Sombra de foco */
+}
+
+/* Estilo para o botão de envio */
+.btn-primary {
+    background-color: #0d6efd; /* Azul mais vibrante */
+    border: none;
+    border-radius: 8px;
+    transition: transform 0.2s ease; /* Animação ao clicar */
+}
+
+.btn-primary:hover {
+    transform: scale(1.05); /* Efeito de zoom ao passar o mouse */
+}
+
+/* Estilo para o rodapé */
+footer {
+    background-color: #f8f9fa; /* Fundo claro */
+    border-top: 1px solid #e9ecef; /* Borda superior sutil */
+}
+
+/* Estilo para o campo de entrada */
+.input-group {
+    border-radius: 8px; /* Bordas arredondadas */
+    overflow: hidden; /* Remove bordas internas */
+}
+
+.input-group .form-control {
+    border: none; /* Remove borda do input */
+    border-radius: 8px 0 0 8px; /* Arredonda apenas o lado esquerdo */
+}
+
+.input-group .btn {
+    border-radius: 0 8px 8px 0; /* Arredonda apenas o lado direito */
+}
+/* Estilo para fórmulas em bloco */
+.mjx-container {
+    margin: 10px 0;
+    text-align: center;
+}
+
+/* Estilo para fórmulas inline */
+.mjx-inline {
+    font-size: 1.1rem; /* Ajusta o tamanho das fórmulas inline */
 }
