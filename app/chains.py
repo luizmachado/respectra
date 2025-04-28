@@ -41,6 +41,7 @@ def general_chain(text):
 # Função para gerar JSON a partir do modelo
 @chain
 def json_chain(text):
+    upload_ativo = True
     prompt = cef_json_prompt(parser)
     gerarjson_chain = (prompt | llm | parser)
     output = gerarjson_chain.invoke({"question": text})
@@ -61,4 +62,4 @@ def julia_chain(text):
         ajuste_param()
         chdir('../')
         exec_graph(output)
-        return "Função Julia executada com sucesso"
+        return
