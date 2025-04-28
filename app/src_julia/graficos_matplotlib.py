@@ -69,7 +69,7 @@ def spin_matplotlib():
     
     # Ajuste o layout
     plt.tight_layout()
-    plt.savefig('graph.png', format='png')
+    plt.savefig('../static/graph.png', format='png')
     return
 
 def mag_matplotlib():
@@ -126,7 +126,7 @@ def mag_matplotlib():
     
     # Exibir a legenda
     plt.tight_layout()
-    plt.savefig('graph.png', format='png')
+    plt.savefig('../static/graph.png', format='png')
     return
 
 def cs_matplotlib():

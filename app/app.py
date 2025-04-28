@@ -78,10 +78,13 @@ def send_message():
                 print(query_input)
                 output = chat_ia(query_input)
                 print(output)
+                image_path = None
+                if os.path.exists("static/graph.png"):
+                    image_path = "/static/graph.png"  # Caminho relativo para o navegador
             except Exception as e:
                 logging.error(f"Erro ao acessar modelo de linguagem: {e}")
                 output = "Desculpe, houve um erro ao processar a sua requisição."
-    return jsonify({'status': 'success', 'messages': output})
+    return jsonify({'status': 'success', 'messages': output, "image": image_path})
 
 if __name__ == '__main__':
     app.run(debug=True)

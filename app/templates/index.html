@@ -118,18 +118,26 @@
     		    .then(response => response.json())
     		    .then(data => {
     		        if (data.status === 'success') {
-    		            const html = marked.parse(data.messages || '');
-    		            chatBox.innerHTML += `
-    		                <div class="chat-message ai mb-3">
-    		                    <div class="bubble ai-bubble">
-    		                        <strong>IA:</strong> ${html}
-    		                    </div>
-    		                </div>`;
-    		            input.value = '';
-    		            chatBox.scrollTop = chatBox.scrollHeight;
+				const html = marked.parse(data.messages || '');
+				chatBox.innerHTML += `
+    		            	    <div class="chat-message ai mb-3">
+    		            	        <div class="bubble ai-bubble">
+    		            	            <strong>IA:</strong> ${html}
+    		            	        </div>
+    		            	    </div>`;
+    		            	input.value = '';
+    		            	chatBox.scrollTop = chatBox.scrollHeight;
 
-    		            // Processa as fórmulas LaTeX recém-adicionadas
-    		            MathJax.typeset();
+				// Exibe a imagem, se houver
+				if (data.image) {
+                		    chatBox.innerHTML += `
+                		        <div class="chat-message ai mb-3">
+                		            <img src="${data.image}" alt="Gráfico gerado" class="img-fluid">
+                		        </div>`;
+                		}
+
+				// Processa as fórmulas LaTeX recém-adicionadas
+				MathJax.typeset();
     		        }
     		    });
 	    }
