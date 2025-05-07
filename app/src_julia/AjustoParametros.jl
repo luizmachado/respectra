@@ -5,7 +5,7 @@ include("CampoMedioBase.jl")
 using .CampoMedio
 include("FuncionesAuxiliares.jl")
 using Pkg
-Pkg.add("Optim")
+# Pkg.add("Optim")
 
 #################################################################
 # Leo dados Experimentais

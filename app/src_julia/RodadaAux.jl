@@ -43,7 +43,8 @@ exit()
 =#
 
 #leo valores iniciales del archivo SoloParametros.txt
-using Pkg; Pkg.add("JSON")
+using Pkg
+# Pkg.add("JSON")
 using JSON
 
 # Abrir o arquivo e ler o conteúdo

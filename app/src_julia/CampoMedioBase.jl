@@ -1,11 +1,11 @@
 import Pkg; 
-Pkg.add("Dierckx")
-Pkg.add("Shuffle")
-Pkg.add("GR")
-Pkg.add("BenchmarkTools");
-Pkg.add("Distributions");
+# Pkg.add("Dierckx")
+# Pkg.add("Shuffle")
+# Pkg.add("GR")
+# Pkg.add("BenchmarkTools");
+# Pkg.add("Distributions");
 using BenchmarkTools
-Pkg.add("LinearRegression")
+# Pkg.add("LinearRegression")
 
 module CampoMedio
 export OperadoresDeSpin, miB, KB, muBemu, muBKsT, 

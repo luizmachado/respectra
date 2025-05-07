@@ -127,7 +127,8 @@ function encontrar_TN_maximo_cambio_entropia(CEF , trocas, Dados)
     return TNDeltaCsT
 end
 
-import Pkg; Pkg.add("LinearRegression")
+import Pkg
+# Pkg.add("LinearRegression")
 using LinearRegression
 #Calcular volor de Theta;
 function Calcular_Theta(CEF , trocas, Dados_Exp,Tmin=300, Tmax=100, NptosT=30 )
@@ -225,7 +226,8 @@ function ImprimoSpin(archSal, vectorx)
     close(arch)
 end
 
-import Pkg; Pkg.add("Optim")
+import Pkg;
+# Pkg.add("Optim")
 using Optim
 struct MySimplexer <: Optim.Simplexer end
 Optim.simplexer(S::MySimplexer, initial_x) = [rand(length(initial_x)) for i = 1:length(initial_x)+1]
