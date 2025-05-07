@@ -21,7 +21,7 @@ def limpa_temp():
             try:
                 # Remove o arquivo
                 os.remove(caminho_arquivo)
-                os.remove("graph.png")
+                os.remove("./static/graph.png")
                 print(f"Arquivo removido: {arquivo}")
             except Exception as e:
                 print(f"Erro ao remover {arquivo}: {e}")
@@ -121,7 +121,7 @@ def limpa_temp():
             try:
                 # Remove o arquivo
                 os.remove(caminho_arquivo)
-                os.remove("graph.png")
+                os.remove("./static/graph.png")
                 print(f"Arquivo removido: {arquivo}")
             except Exception as e:
                 print(f"Erro ao remover {arquivo}: {e}")
