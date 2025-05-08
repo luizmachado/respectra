@@ -24,7 +24,7 @@
         <div class="row flex-grow-1 g-4 overflow-hidden m-0">
             {% if upload_ativo %}
             <!-- Área de Upload -->
-            <div class="col-md-4 p-3 overflow-auto bg-light border-end">
+            <div class="col-md-4 p-3 overflow-auto bg-light border-end" id="upload-area">
                 <div class="card p-3 shadow-sm h-100">
                     <h5><i class="fas fa-upload"></i> Enviar Arquivos</h5>
                     <form action="/" method="POST" enctype="multipart/form-data">
@@ -54,7 +54,7 @@
             </div>
             <div class="col-md-8 d-flex flex-column p-0">
             {% else %}
-            <div class="col-12 d-flex flex-column p-0">
+            <div class="col-12 d-flex flex-column p-0" id="chat-area">
             {% endif %}
                 <!-- Área do Chat -->
                 <section id="chat-box" class="flex-grow-1 p-4 overflow-auto bg-white">
@@ -141,6 +141,31 @@
     		        }
     		    });
 	    }
+    </script>
+    <script>
+        function updateUploadAreaVisibility() {
+            fetch('/upload_ativo_status')
+                .then(response => response.json())
+                .then(data => {
+                    const uploadArea = document.getElementById('upload-area');
+                    const chatArea = document.getElementById('chat-area');
+                    if (data.upload_ativo) {
+                        uploadArea.style.display = 'block';
+                        chatArea.classList.remove('col-12');
+                        chatArea.classList.add('col-md-8');
+                    } else {
+                        uploadArea.style.display = 'none';
+                        chatArea.classList.remove('col-md-8');
+                        chatArea.classList.add('col-12');
+                    }
+                });
+        }
+
+        // Update the visibility every 2 seconds
+        setInterval(updateUploadAreaVisibility, 2000);
+
+        // Chamada inicial para definir a visibilidade quando a página carrega
+        updateUploadAreaVisibility();
     </script>
 </body>
 </html>
