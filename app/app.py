@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for, jsonify
+from socket_manager import init_socketio
 from langchain_google_genai import ChatGoogleGenerativeAI
 from chains import json_chain
 from chains import julia_chain
@@ -12,6 +13,8 @@ import json
 import os
 
 app = Flask(__name__)
+app.secret_key = os.urandom(24)  # Chave secreta para a sessão
+socketio = init_socketio(app)
 
 # Configuração da pasta para upload dos arquivos
 UPLOAD_FOLDER = 'uploads'
@@ -33,7 +36,7 @@ def chat_ia(query):
     )
 
     full_chain = (
-        {"topic": routing_chain, "question": lambda x: x["question"]} | branch
+            {"topic": routing_chain, "question": lambda x: x["question"]} | branch
     )
 
     resultado = full_chain.invoke({"question": query})
@@ -65,12 +68,14 @@ def index():
                 file.save(filepath)
     return render_template('index.html', chat_messages=chat_messages)
 
+
 @app.route('/send_message', methods=['POST'])
 
 def send_message():
     # Receber mensagem do chat via AJAX
     query_input = None
     output = None
+    image_path = None
     if request.method == 'POST':
         query_input = request.form.get('message')
         if query_input:
@@ -78,13 +83,18 @@ def send_message():
                 print(query_input)
                 output = chat_ia(query_input)
                 print(output)
-                image_path = None
                 if os.path.exists("static/graph.png"):
+                    output = "Simulação realizada com sucesso"
                     image_path = "./static/graph.png"  # Caminho relativo para o navegador
             except Exception as e:
                 logging.error(f"Erro ao acessar modelo de linguagem: {e}")
                 output = "Desculpe, houve um erro ao processar a sua requisição."
-    return jsonify({'status': 'success', 'messages': output, "image": image_path})
+    if image_path:
+        return jsonify({'status': 'success', 'messages': output, "image": image_path})
+
+    else:
+        return jsonify({'status': 'success', 'messages': output})
 
 if __name__ == '__main__':
     app.run(debug=True)
+    socketio.run(app)

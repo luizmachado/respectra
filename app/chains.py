@@ -1,4 +1,5 @@
 from langchain_core.runnables import chain
+from flask_socketio import emit
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_core.output_parsers import JsonOutputParser
 from prompts import cef_json_prompt, responde_prompt, chart_prompt
@@ -40,8 +41,8 @@ def general_chain(text):
 
 # Função para gerar JSON a partir do modelo
 @chain
-def json_chain(text):
-    upload_ativo = True
+def json_chain(text, socketio):
+    socketio.emit('habilitar_upload', {'status': True})
     prompt = cef_json_prompt(parser)
     gerarjson_chain = (prompt | llm | parser)
     output = gerarjson_chain.invoke({"question": text})
@@ -56,10 +57,12 @@ def julia_chain(text):
     if verificar_arquivos(arquivos_txt, julia_dir):
         exec_graph(output)
         print(output)
+        return
 
     else:
         chdir(julia_dir)
         ajuste_param()
         chdir('../')
         exec_graph(output)
+        print(output)
         return
