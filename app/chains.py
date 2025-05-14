@@ -1,5 +1,4 @@
 from langchain_core.runnables import chain
-from flask_socketio import emit
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_core.output_parsers import JsonOutputParser
 from prompts import cef_json_prompt, responde_prompt, chart_prompt
@@ -11,11 +10,13 @@ from langchain_core.prompts import PromptTemplate
 from langchain_core.output_parsers import StrOutputParser
 from prompts import routing_prompt
 from langchain_core.runnables import RunnableBranch
+from socket_manager import get_socketio
 import os
 
 llm = ChatGoogleGenerativeAI(model="gemini-2.0-flash")
 
 parser = JsonOutputParser(pydantic_object=AjusteCompleto)
+
 
 arquivos_txt = ['ConfSpin_Calc.txt', 'CsT_calc.txt', 'Entrop_calc.txt', 'MH1_calc.txt', 'MH2_calc.txt', 'MT1_calc.txt', 'MT2_calc.txt']
 julia_dir = './src_julia'
@@ -41,8 +42,13 @@ def general_chain(text):
 
 # Função para gerar JSON a partir do modelo
 @chain
-def json_chain(text, socketio):
-    socketio.emit('habilitar_upload', {'status': True})
+def json_chain(text):
+    socketio = get_socketio()
+    if socketio:
+        socketio.emit('habilitar_upload', {'status': True})
+    else:
+        print("SocketIO ainda não foi inicializado")
+
     prompt = cef_json_prompt(parser)
     gerarjson_chain = (prompt | llm | parser)
     output = gerarjson_chain.invoke({"question": text})
