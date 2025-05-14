@@ -1,5 +1,6 @@
 set terminal pdf enhanced color
-set output "AjusteTb.pdf"
+set output "AjusteTb139.pdf"
+#set key b r
 unset xtics
 unset ytics
 unset ztics
@@ -44,55 +45,34 @@ p arch u ($2 - $5/escala/2.):($3 - $6/escala/2.):  \
          w vectors lc variable lw 3 t ""
 
 
-archCsT="CsT_calc.txt"
-archEntrop="Entrop_calc.txt"
-archMT1="MT1_calc.txt"
-archMT2="MT2_calc.txt"
-archMH1="MH1_calc.txt"
-archMH2="MH2_calc.txt"
+
+#archivos con los datos
+archExpMT1="Tb139/1MT.d"
+archExpMT2="Tb139/2MT.d"
+
+#archivo con los ajustes
+archMT1="MT1.txt"
+archMT2="MT2.txt"
 
 ctec=(0.5586*(3./2.)*(3./2.)*0.67*6.*7.)/3.
 
-unset xrange
-unset yrange
-
-set multiplot layout 2,2
-set xrange [*:*]
-set yrange [*:*]
-set title  "CsvsT"
-set xlabel "Temp[K]"
-set ylabel "C/T[mJ/K^2/mol]"
-plot archCsT u 1:2 w p lc 1 t ""
-
-
-#Grafico Entrop vs T 
-set title  "EntropvsT"
-set xlabel "Temp[K]"
-set ylabel "Entrop[mJ/K/mol]"
-plot archEntrop u 1:2 w p lc 1 t ""
-    
+set multiplot layout 1,2
 
 # grafico M/H
 set title "MsHvsT"
 set xlabel "Temp[K]"
 set ylabel "Chi[emu/mol.Oe]"
-plot archMT1 u 1:2 w l lc 1 t "",\
+plot archExpMT1 u 1:2 skip 5 w p lc 1  t "1MT",\
+     archMT1 u 1:2 w l lc 1 t "", \
+     archExpMT2 u 1:2 skip 5 w p lc 2 t "2MT" ,\
      archMT2 u 1:2 w l lc 2 t ""
-
-
+     
 set title "1/ChivsT"
 set xlabel "Temp[K]"
 set ylabel "Chi[emu/mol.Oe]"
-plot archMT1 u 1:(1/$2) w l lc 1 t "",\
-     archMT2 u 1:(1/$2) w l lc 2 t ""
-
-
-
+plot archExpMT1 u 1:(1/$2) skip 5 w p lc 1  t "1MT",\
+     archMT1 u 1:(1/$2) w l lc 1 t "", \
+     archExpMT2 u 1:(1/$2) skip 5 w p lc 2 t "2MT" ,\
+     archMT2 u 1:(1/$2) w l lc 2 t "" 
+     
 unset multiplot
-set title "MvsH"
-set xlabel "Field[T]"
-set ylabel "Mag[emu/mol]"
-plot archMH1 u 1:2 w l lc 1 t "", \
-     archMH2 u 1:2 w l lc 2 t ""
-
-

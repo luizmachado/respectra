@@ -1,12 +1,13 @@
 #################################################################
 # NO CAMBIAR ESTA PARTE
 #################################################################
-include("CampoMedioBase.jl")
-using .CampoMedio
-include("FuncionesAuxiliares.jl")
-using Pkg
-# Pkg.add("Optim")
-
+include("IntegroSunny_HoNiSi3.jl")
+#=include("CampoMedioBase.jl")
+#using .CampoMedio
+#include("FuncionesAuxiliares.jl")
+#using Pkg
+#Pkg.add("Optim")
+=#
 #################################################################
 # Leo dados Experimentais
 #################################################################
@@ -15,12 +16,12 @@ include("DatosExperimentais.jl")
 #################################################################
 # Rede, hamiltoniano y tipo de spin
 #################################################################
-include("Rede.jl")
+#include("Rede.jl")
 
 #################################################################
 # Busco parametros optimos 
 #################################################################
-include("LeoParametrosJSON.jl")
+#include("LeoParametrosJSON.jl")
 
 # ajuste por 1200s = 20min
 

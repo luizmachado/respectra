@@ -15,11 +15,11 @@ end
 function fun_ajst(x)
     CEFAux = XsToCEFeTrocas(x)
     CEFA = merge(CEFAux.CEF, (B43 = CEF0.B43, B60 = CEF0.B60, B63 = CEF0.B63, B66 = CEF0.B66, B4M3 = CEF0.B4M3, B6M3 = CEF0.B6M3, B6M6 = CEF0.B6M6))
-    #Rodada_Aux_CsT = Ajst_CsT(CEF0 , trocas0, Dados_ExpCsT )
+    Rodada_Aux_CsT = Ajst_CsT(CEF0 , trocas0, Dados_ExpCsT )
     Rodada_Aux_MT1 = Ajst_Chi(CEFA , trocas0, Dados_Exp1MT )
     Rodada_Aux_MT2 = Ajst_Chi(CEFA , trocas0, Dados_Exp2MT )
-    #Rodada_Aux_MH1 = Ajst_Mag(CEF0 , trocas0, Dados_Exp1MH )
-    #Rodada_Aux_MH2 = Ajst_Mag(CEF0 , trocas0, Dados_Exp2MH )
+    Rodada_Aux_MH1 = Ajst_Mag(CEF0 , trocas0, Dados_Exp1MH )
+    Rodada_Aux_MH2 = Ajst_Mag(CEF0 , trocas0, Dados_Exp2MH )
     #=
     println(Rodada_Aux_CsT.Qualid_Ajst * Dados_ExpCsT.Peso_Ajs )
     println(Rodada_Aux_MT1.Qualid_Ajst * Dados_Exp1MT.Peso_Ajs )
@@ -28,10 +28,10 @@ function fun_ajst(x)
     println(Rodada_Aux_MH2.Qualid_Ajst * Dados_Exp2MH.Peso_Ajs )
     =#
     return Rodada_Aux_MT1.Qualid_Ajst * Dados_Exp1MT.Peso_Ajs + 
-           Rodada_Aux_MT2.Qualid_Ajst * Dados_Exp2MT.Peso_Ajs 
-           #Rodada_Aux_CsT.Qualid_Ajst * Dados_ExpCsT.Peso_Ajs +
-           #Rodada_Aux_MH1.Qualid_Ajst * Dados_Exp1MH.Peso_Ajs + 
-           #Rodada_Aux_MH2.Qualid_Ajst * Dados_Exp2MH.Peso_Ajs 
+           Rodada_Aux_MT2.Qualid_Ajst * Dados_Exp2MT.Peso_Ajs +
+           Rodada_Aux_CsT.Qualid_Ajst * Dados_ExpCsT.Peso_Ajs +
+           Rodada_Aux_MH1.Qualid_Ajst * Dados_Exp1MH.Peso_Ajs + 
+           Rodada_Aux_MH2.Qualid_Ajst * Dados_Exp2MH.Peso_Ajs 
 end
 
 #= valores inicias para o ajuste
@@ -43,8 +43,7 @@ exit()
 =#
 
 #leo valores iniciales del archivo SoloParametros.txt
-using Pkg
-# Pkg.add("JSON")
+#using Pkg; Pkg.add("JSON")
 using JSON
 
 # Abrir o arquivo e ler o conteúdo

@@ -9,11 +9,7 @@ println("Acoplamientos a Ajustar: ", ParametrosJsAAjustarTupla)
 println("Acoplamientos a NO Ajustar: ", ParametrosJsANoAjustarTupla)
 
 println("Cantidad de variables a ajustar ", length(ParametrosCEFAAjustarTupla) + length(ParametrosJsAAjustarTupla) )
-# pruebo la funcion
-#Xs=CEFeJsToXs(ParametrosCEFAAjustarTupla,ParametrosJsAAjustarTupla)
-#println("Xs: ", Xs)
 
-# pruebo la funcion
-#CEFNuevo, JsNuevo = XsToCEFeJs(Xs)
-#println("CEFNuevo: ", CEFNuevo)
-#println("JsNuevo: ", JsNuevo)
+# dejo los parametros de CEF y Js en una unica tupla
+CEFA = merge(ParametrosCEFAAjustarTupla,ParametrosCEFANoAjustarTupla)
+trocas = merge(ParametrosJsAAjustarTupla,ParametrosJsANoAjustarTupla)
